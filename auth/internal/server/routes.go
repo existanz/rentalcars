@@ -3,14 +3,17 @@ package server
 import (
 	"encoding/json"
 	"log"
+	"log/slog"
 	"net/http"
+
+	restLogger "auth/pkg/rest-logger"
 
 	"github.com/gorilla/mux"
 )
 
 func (s *Server) RegisterRoutes() http.Handler {
 	r := mux.NewRouter()
-
+	r.Use(restLogger.LogMiddleware(slog.Default()))
 	r.HandleFunc("/", s.BlankHandler)
 
 	return r
